@@ -9,13 +9,13 @@ import java.util.Map;
 public class SalaryRepo {
 
 
-    private Map<Integer, Salary> salaryDtos=new HashMap<>();
+    private final Map<Integer, Salary> salaryMap =new HashMap<>();
 
     public Salary findByEmployeeId(int employeeId) {
-        return salaryDtos.getOrDefault(employeeId, new Salary());
+        return salaryMap.getOrDefault(employeeId, new Salary());
     }
 
     public void save(int id, Salary salary) {
-        salaryDtos.putIfAbsent(id, salary);
+        salaryMap.putIfAbsent(id, salary);
     }
 }
