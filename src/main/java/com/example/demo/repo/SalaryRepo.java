@@ -1,18 +1,17 @@
-package com.example.demo;
+package com.example.demo.repo;
 
-import org.springframework.stereotype.Component;
+import com.example.demo.Salary;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
 public class SalaryRepo {
 
 
     private final Map<Integer, Salary> salaryMap =new HashMap<>();
 
     public Salary findByEmployeeId(int employeeId) {
-        return salaryMap.getOrDefault(employeeId, new Salary());
+        return salaryMap.getOrDefault(employeeId, new Salary(0));
     }
 
     public void save(int id, Salary salary) {

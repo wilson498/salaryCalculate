@@ -1,18 +1,18 @@
 package com.example.demo;
 
+import com.example.demo.repo.LeaveRepo;
+import com.example.demo.repo.SalaryRepo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.util.List;
 
 
-class CalculateServiceTest {
+class SalaryCalculateTest {
 
-    private CalculateService calculateService;
+    private SalaryCalculate salaryCalculate;
     private SalaryRepo salaryRepo;
     private LeaveRepo leaveRepo;
 
@@ -21,7 +21,7 @@ class CalculateServiceTest {
     void setUp() {
         salaryRepo = new SalaryRepo();
         leaveRepo = new LeaveRepo();
-        calculateService = new CalculateService(salaryRepo,leaveRepo);
+        salaryCalculate = new SalaryCalculate(salaryRepo, leaveRepo);
     }
 
     private void givenEmployeeLeave(int id, List<LeaveDate> leaveDtos) {
@@ -29,20 +29,19 @@ class CalculateServiceTest {
     }
 
     private void givenEmployeeSalary(int id, int salary) {
-        Salary salaryDto = new Salary();
-        salaryDto.setValue(salary);
+        Salary salaryDto = new Salary(salary);
         salaryRepo.save(id, salaryDto);
     }
 
     private LeaveDate createLeaveDto(LocalDate from, LocalDate to) {
-        return new LeaveDate(from,to);
+        return new LeaveDate(from, to);
     }
 
     @Test
     public void 全年沒請假() {
         givenEmployeeSalary(1, 31000);
         givenEmployeeLeave(1, List.of());
-        int salary = calculateService.calculate(1, 2025, 12);
+        int salary = salaryCalculate.calculate(1, 2025, 12);
 
         Assertions.assertEquals(31000, salary);
     }
@@ -58,7 +57,7 @@ class CalculateServiceTest {
                         LocalDate.of(2025, 12, 31)
                 )
         ));
-        int salary = calculateService.calculate(1, 2025, 12);
+        int salary = salaryCalculate.calculate(1, 2025, 12);
 
         Assertions.assertEquals(0, salary);
     }
@@ -73,7 +72,7 @@ class CalculateServiceTest {
                         LocalDate.of(2025, 12, 1)
                 )
         ));
-        int salary = calculateService.calculate(1, 2025, 12);
+        int salary = salaryCalculate.calculate(1, 2025, 12);
         Assertions.assertEquals(30000, salary);
     }
 
@@ -91,7 +90,7 @@ class CalculateServiceTest {
                         LocalDate.of(2025, 12, 7)
                 )
         ));
-        int salary = calculateService.calculate(1, 2025, 12);
+        int salary = salaryCalculate.calculate(1, 2025, 12);
         Assertions.assertEquals(28000, salary);
     }
 
@@ -106,7 +105,7 @@ class CalculateServiceTest {
                 )
         ));
 
-        int salary = calculateService.calculate(1, 2025, 12);
+        int salary = salaryCalculate.calculate(1, 2025, 12);
 
         Assertions.assertEquals(31000, salary);
     }
@@ -121,7 +120,7 @@ class CalculateServiceTest {
                 )
         ));
 
-        int salary = calculateService.calculate(1, 2025, 12);
+        int salary = salaryCalculate.calculate(1, 2025, 12);
 
         Assertions.assertEquals(31000, salary);
     }
@@ -137,7 +136,7 @@ class CalculateServiceTest {
                 )
         ));
 
-        int salary = calculateService.calculate(1, 2025, 12);
+        int salary = salaryCalculate.calculate(1, 2025, 12);
 
         Assertions.assertEquals(31000, salary);
     }
@@ -153,7 +152,7 @@ class CalculateServiceTest {
                         LocalDate.of(2026, 1, 31)
                 )
         ));
-        int salary = calculateService.calculate(1, 2025, 12);
+        int salary = salaryCalculate.calculate(1, 2025, 12);
 
         Assertions.assertEquals(0, salary);
     }

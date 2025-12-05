@@ -1,12 +1,11 @@
-package com.example.demo;
+package com.example.demo.repo;
 
-import org.springframework.stereotype.Component;
+import com.example.demo.LeaveDate;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
 public class LeaveRepo {
 
     private final Map<Integer, List<LeaveDate>> leaveDtoMap = new HashMap<>();

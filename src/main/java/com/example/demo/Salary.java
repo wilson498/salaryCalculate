@@ -1,8 +1,5 @@
 package com.example.demo;
 
-import lombok.Data;
+public record Salary(int value) {
 
-@Data
-public class Salary {
-    public Integer value;
 }
