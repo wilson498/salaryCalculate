@@ -10,14 +10,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 
-@SpringBootTest
 class CalculateServiceTest {
 
-    @Autowired
     private CalculateService calculateService;
-    @Autowired
     private SalaryRepo salaryRepo;
-    @Autowired
     private LeaveRepo leaveRepo;
 
 
@@ -25,8 +21,7 @@ class CalculateServiceTest {
     void setUp() {
         salaryRepo = new SalaryRepo();
         leaveRepo = new LeaveRepo();
-        calculateService.setSalaryRepo(salaryRepo);
-        calculateService.setLeaveRepo(leaveRepo);
+        calculateService = new CalculateService(salaryRepo,leaveRepo);
     }
 
     private void givenEmployeeLeave(int id, List<LeaveDate> leaveDtos) {
