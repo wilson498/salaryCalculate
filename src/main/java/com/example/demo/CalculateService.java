@@ -26,9 +26,9 @@ public class CalculateService {
 
         int salary = salaryRepo.findByEmployeeId(employeeId).getValue();
 
-        List<LeaveDto> leaveDtos = leaveRepo.findAllByEmployeeId(employeeId);
+        List<LeaveDate> leaveDtos = leaveRepo.findAllByEmployeeId(employeeId);
         Set<String> leaveDaySet = new HashSet<>();
-        for(LeaveDto leaveDto : leaveDtos) {
+        for (LeaveDate leaveDto : leaveDtos) {
             leaveDaySet.addAll(leaveDto.getSetLeaveDaySet());
         }
 

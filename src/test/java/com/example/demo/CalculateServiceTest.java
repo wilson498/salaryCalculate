@@ -29,7 +29,7 @@ class CalculateServiceTest {
         calculateService.setLeaveRepo(leaveRepo);
     }
 
-    private void givenEmployeeLeave(int id, List<LeaveDto> leaveDtos) {
+    private void givenEmployeeLeave(int id, List<LeaveDate> leaveDtos) {
         leaveRepo.save(id, leaveDtos);
     }
 
@@ -39,8 +39,8 @@ class CalculateServiceTest {
         salaryRepo.save(id, salaryDto);
     }
 
-    private LeaveDto createLeaveDto(LocalDate from, LocalDate to) {
-        return new LeaveDto(from,to);
+    private LeaveDate createLeaveDto(LocalDate from, LocalDate to) {
+        return new LeaveDate(from,to);
     }
 
     @Test

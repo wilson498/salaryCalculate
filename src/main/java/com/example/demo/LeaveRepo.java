@@ -1,6 +1,5 @@
 package com.example.demo;
 
-import lombok.Data;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -10,13 +9,13 @@ import java.util.Map;
 @Component
 public class LeaveRepo {
 
-    private Map<Integer, List<LeaveDto>> leaveDtoMap = new HashMap<>();
+    private Map<Integer, List<LeaveDate>> leaveDtoMap = new HashMap<>();
 
-    public List<LeaveDto> findAllByEmployeeId(int employeeId) {
+    public List<LeaveDate> findAllByEmployeeId(int employeeId) {
         return leaveDtoMap.getOrDefault(employeeId, null);
     }
 
-    public void save(int i, List<LeaveDto> leaveDtos) {
+    public void save(int i, List<LeaveDate> leaveDtos) {
         leaveDtoMap.put(i, leaveDtos);
     }
 }

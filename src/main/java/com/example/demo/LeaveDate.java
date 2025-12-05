@@ -5,7 +5,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Set;
 
-public record LeaveDto(LocalDate from, LocalDate to) {
+
+
+public record LeaveDate(LocalDate from, LocalDate to) {
 
 
     public Set<String> getSetLeaveDaySet() {
