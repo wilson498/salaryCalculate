@@ -34,7 +34,7 @@ class CalculateServiceTest {
     }
 
     private void givenEmployeeSalary(int id, int salary) {
-        SalaryDto salaryDto = new SalaryDto();
+        Salary salaryDto = new Salary();
         salaryDto.setValue(salary);
         salaryRepo.save(id, salaryDto);
     }
