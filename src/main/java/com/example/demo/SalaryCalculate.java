@@ -20,12 +20,11 @@ public class SalaryCalculate {
         long monthDays = ChronoUnit.DAYS.between(startMonth, endMonth) + 1;
 
         Salary salary = salaryRepo.findByEmployeeId(employeeId);
-        List<LeaveDate> leaveDates = leaveRepo.findAllByEmployeeId(employeeId);
-        LeaveCalculate leaveCalculate = new LeaveCalculate(leaveDates);
+        LeaveCalculate leaveCalculate = new LeaveCalculate( leaveRepo.findAllByEmployeeId(employeeId) );
 
         int leaveDays = leaveCalculate.getLeaveDays(monthDays, startMonth);
 
-        return salary.getSalaryActual(monthDays,leaveDays);
+        return salary.getSalaryActual(monthDays, leaveDays);
     }
 
 
