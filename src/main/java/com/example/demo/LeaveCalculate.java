@@ -16,18 +16,15 @@ public class LeaveCalculate {
     }
 
     private Map<String, Integer> getLeaveDayMap() {
-        Map<String, Integer> leaveDayMap = leaveDates.stream()
-                .collect(HashMap::new,
-                        (map, leaveDate) -> {
-                            leaveDate.getSetLeaveDayMap().forEach((key, value) -> {
-                                int sum = map.getOrDefault(key, 0);
-                                map.put(key, sum + value);
-                            });                        },
-                        HashMap::putAll);
-//        for (LeaveDate leaveDate : leaveDates) {
-//
-//        }
-        return leaveDayMap;
+        return leaveDates.stream().collect(
+                HashMap::new,
+                (map, leaveDate) -> leaveDate.getSetLeaveDayMap().forEach(
+                        (key, value) -> {
+                            int sum = map.getOrDefault(key, 0);
+                            map.put(key, sum + value);
+                        }
+                ),
+                HashMap::putAll);
     }
 
     public int getLeaveDays(LocalDate startDate) {
