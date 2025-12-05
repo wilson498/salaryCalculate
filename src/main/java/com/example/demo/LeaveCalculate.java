@@ -7,7 +7,7 @@ import java.util.Set;
 
 public record LeaveCalculate(List<LeaveDate> leaveDates) {
 
-    private Set<String> getSetString() {
+    private Set<String> getStringSet() {
         Set<String> leaveDaySet = new HashSet<>();
         for (LeaveDate leaveDate : leaveDates) {
             leaveDaySet.addAll(leaveDate.getSetLeaveDaySet());
@@ -15,11 +15,11 @@ public record LeaveCalculate(List<LeaveDate> leaveDates) {
         return leaveDaySet;
     }
 
-    public int getLeaveDays(long monthDays, LocalDate startMonth) {
-        Set<String> leaveDaySet = getSetString();
+    public int getLeaveDays(long monthDays, LocalDate startDate) {
+        Set<String> leaveDaySet = getStringSet();
         int leaveDays = 0;
         for (int day = 0; day < monthDays; day++) {
-            LocalDate date = startMonth.plusDays(day);
+            LocalDate date = startDate.plusDays(day);
             if (leaveDaySet.contains(date.toString())) {
                 leaveDays++;
             }
