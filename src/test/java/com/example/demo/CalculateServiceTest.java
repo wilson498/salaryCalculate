@@ -40,10 +40,7 @@ class CalculateServiceTest {
     }
 
     private LeaveDto createLeaveDto(LocalDate from, LocalDate to) {
-        LeaveDto leaveDto = new LeaveDto();
-        leaveDto.setFrom(from);
-        leaveDto.setTo(to);
-        return leaveDto;
+        return new LeaveDto(from,to);
     }
 
     @Test
