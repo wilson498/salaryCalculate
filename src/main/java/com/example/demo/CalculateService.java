@@ -28,6 +28,12 @@ public class CalculateService {
 
         LocalDate startMonth = LocalDate.of(year, month, 1);
         LocalDate endMonth = startMonth.withDayOfMonth(startMonth.lengthOfMonth());
+        Leave result = getLeave(startMonth, endMonth, leaveDaySet);
+
+        return salary - (salary / result.monthDays()) * result.leaveDays();
+    }
+
+    private Leave getLeave(LocalDate startMonth, LocalDate endMonth, Set<String> leaveDaySet) {
         int leaveDays = 0;
         int monthDays = (int) ChronoUnit.DAYS.between(startMonth, endMonth) + 1;
         for (int day = 0; day < monthDays; day++) {
@@ -36,8 +42,11 @@ public class CalculateService {
                 leaveDays++;
             }
         }
+        Leave result = new Leave(leaveDays, monthDays);
+        return result;
+    }
 
-        return salary - (salary / monthDays) * leaveDays;
+    private record Leave(int leaveDays, int monthDays) {
     }
 
     private Set<String> getSetLeaveDaySet(List<LeaveDto> leaveDtos) {
