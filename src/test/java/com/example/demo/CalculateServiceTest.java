@@ -39,6 +39,13 @@ class CalculateServiceTest {
         salaryRepo.save(id, salaryDto);
     }
 
+    private LeaveDto createLeaveDto(LocalDate from, LocalDate to) {
+        LeaveDto leaveDto = new LeaveDto();
+        leaveDto.setFrom(from);
+        leaveDto.setTo(to);
+        return leaveDto;
+    }
+
     @Test
     public void 全年沒請假() {
         givenEmployeeSalary(1, 31000);
@@ -48,35 +55,62 @@ class CalculateServiceTest {
         Assertions.assertEquals(31000, salary);
     }
 
-
     @Test
     public void 請了一整個月的假() {
 
-        createLeaveDto(LocalDate.of(2025,12,1),LocalDate.of(2025,12,31));
-
 
         givenEmployeeSalary(1, 31000);
-        givenEmployeeLeave(1, List.of());
-        int salary = calculateService.calculate(1, 2025, 21);
+        givenEmployeeLeave(1, List.of(
+                createLeaveDto(
+                        LocalDate.of(2025, 12, 1),
+                        LocalDate.of(2025, 12, 31)
+                )
+        ));
+        int salary = calculateService.calculate(1, 2025, 12);
 
         Assertions.assertEquals(0, salary);
     }
 
-    private void createLeaveDto(LocalDate from, LocalDate to) {
-        LeaveDto leaveDto = new LeaveDto();
-        leaveDto.setFrom(from);
-        leaveDto.setTo(to);
-    }
 
     @Test
     public void 當月請了一天的假() {
+        givenEmployeeSalary(1, 31000);
+        givenEmployeeLeave(1, List.of(
+                createLeaveDto(
+                        LocalDate.of(2025, 12, 1),
+                        LocalDate.of(2025, 12, 1)
+                )
+        ));
         int salary = calculateService.calculate(1, 2025, 12);
-
         Assertions.assertEquals(30000, salary);
     }
 
     @Test
-    public void 全年有請假_但沒12沒有在內() {
+    public void 全年有請假_請假時間比較早() {
+
+        givenEmployeeSalary(1, 31000);
+        givenEmployeeLeave(1, List.of(
+                createLeaveDto(
+                        LocalDate.of(2025, 11, 1),
+                        LocalDate.of(2025, 11, 30)
+                )
+        ));
+
+        int salary = calculateService.calculate(1, 2025, 12);
+
+        Assertions.assertEquals(31000, salary);
+    }
+
+    @Test
+    public void 全年有請假_請假時間比較晚() {
+        givenEmployeeSalary(1, 31000);
+        givenEmployeeLeave(1, List.of(
+                createLeaveDto(
+                        LocalDate.of(2026, 1, 1),
+                        LocalDate.of(2026, 1, 30)
+                )
+        ));
+
         int salary = calculateService.calculate(1, 2025, 12);
 
         Assertions.assertEquals(31000, salary);
