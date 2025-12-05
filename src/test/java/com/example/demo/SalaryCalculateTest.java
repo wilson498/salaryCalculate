@@ -142,7 +142,7 @@ class SalaryCalculateTest {
     }
 
     @Test
-    public void 請了超過整個月的假() {
+    public void 請超過整個月的假() {
 
 
         givenEmployeeSalary(1, 31000);
@@ -155,6 +155,21 @@ class SalaryCalculateTest {
         int salary = salaryCalculate.calculate(1, 2025, 12);
 
         Assertions.assertEquals(0, salary);
+    }
+
+    @Test
+    public void 金額有小數() {
+        givenEmployeeSalary(1, 31000);
+        givenEmployeeLeave(1, List.of(
+                createLeaveDto(
+                        LocalDate.of(2025, 11, 1),
+                        LocalDate.of(2025, 11, 1)
+                )
+        ));
+        int salary = salaryCalculate.calculate(1, 2025, 11);
+        // 31000/30 = 1033.33333333~~~~~
+        // 31000 -1033.3333333=29966.6667 無條件捨去29966
+        Assertions.assertEquals(29966, salary);
     }
 
 }
