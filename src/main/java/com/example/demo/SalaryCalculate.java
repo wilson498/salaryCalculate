@@ -7,43 +7,33 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @RequiredArgsConstructor
 public class SalaryCalculate {
     private final SalaryRepo salaryRepo;
     private final LeaveRepo leaveRepo;
+
     public int calculate(int employeeId, int year, int month) {
 
         LocalDate startMonth = LocalDate.of(year, month, 1);
         LocalDate endMonth = startMonth.withDayOfMonth(startMonth.lengthOfMonth());
         long monthDays = ChronoUnit.DAYS.between(startMonth, endMonth) + 1;
-
         int salary = salaryRepo.findByEmployeeId(employeeId).value();
+
         List<LeaveDate> leaveDates = leaveRepo.findAllByEmployeeId(employeeId);
+        LeaveCalculate leaveCalculate = new LeaveCalculate(leaveDates);
 
 
-        Set<String> leaveDaySet = new HashSet<>();
-        for (LeaveDate leaveDate : leaveDates) {
-            leaveDaySet.addAll(leaveDate.getSetLeaveDaySet());
-        }
+        int leaveDays = leaveCalculate.getLeaveDays(monthDays, startMonth);
 
-        int leaveDays = getLeaveDays(monthDays, startMonth, leaveDaySet);
 
+        return getAnInt(salary, monthDays, leaveDays);
+    }
+
+    private int getAnInt(int salary, long monthDays, int leaveDays) {
         return (int) (salary - (salary / monthDays) * leaveDays);
     }
 
-    private int getLeaveDays(long monthDays, LocalDate startMonth, Set<String> leaveDaySet) {
-        int leaveDays = 0;
-        for (int day = 0; day < monthDays; day++) {
-            LocalDate date = startMonth.plusDays(day);
-            if (leaveDaySet.contains(date.toString())) {
-                leaveDays++;
-            }
-        }
-        return leaveDays;
-    }
 
 }
