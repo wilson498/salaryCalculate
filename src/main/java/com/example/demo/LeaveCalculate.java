@@ -1,29 +1,33 @@
 package com.example.demo;
 
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
-public record LeaveCalculate(List<LeaveDate> leaveDates) {
+public class LeaveCalculate {
 
-    private Set<String> getStringSet() {
-        Set<String> leaveDaySet = new HashSet<>();
-        for (LeaveDate leaveDate : leaveDates) {
-            leaveDaySet.addAll(leaveDate.getSetLeaveDaySet());
-        }
-        return leaveDaySet;
+    private final List<LeaveDate> leaveDates;
+    private final Map<String, Integer> leaveDayMap;
+
+    LeaveCalculate(List<LeaveDate> leaveDates) {
+        this.leaveDates = leaveDates;
+        leaveDayMap = getLeaveDayMap();
     }
 
-    public int getLeaveDays(long monthDays, LocalDate startDate) {
-        Set<String> leaveDaySet = getStringSet();
-        int leaveDays = 0;
-        for (int day = 0; day < monthDays; day++) {
-            LocalDate date = startDate.plusDays(day);
-            if (leaveDaySet.contains(date.toString())) {
-                leaveDays++;
-            }
+    private Map<String, Integer> getLeaveDayMap() {
+        Map<String, Integer> leaveDayMap = new HashMap<>();
+        for (LeaveDate leaveDate : leaveDates) {
+            leaveDate.getSetLeaveDayMap().forEach((key, value) -> {
+                int sum = leaveDayMap.getOrDefault(key, 0);
+                sum += value;
+                leaveDayMap.put(key, sum);
+            });
         }
-        return leaveDays;
+        return leaveDayMap;
+    }
+
+    public int getLeaveDays(LocalDate startDate) {
+        return leaveDayMap.getOrDefault(startDate.getYear() + "-" + startDate.getMonthValue(), 0);
     }
 }

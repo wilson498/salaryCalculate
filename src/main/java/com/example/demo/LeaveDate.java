@@ -2,20 +2,22 @@ package com.example.demo;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.HashSet;
-import java.util.Set;
-
+import java.util.HashMap;
+import java.util.Map;
 
 
 public record LeaveDate(LocalDate from, LocalDate to) {
 
 
-    public Set<String> getSetLeaveDaySet() {
-        Set<String> leaveDaySet = new HashSet<>();
-        long days = ChronoUnit.DAYS.between(from ,to) + 1;
+    public Map<String, Integer> getSetLeaveDayMap() {
+        Map<String, Integer> leaveDayMap = new HashMap();
+        long days = ChronoUnit.DAYS.between(from, to) + 1;
         for (int day = 0; day < days; day++) {
-            leaveDaySet.add(from.plusDays(day).toString());
+            LocalDate currentProcessDate = from.plusDays(day);
+            String key = currentProcessDate.getYear() + "-" + currentProcessDate.getMonthValue();
+            int sum = leaveDayMap.getOrDefault(key, 0);
+            leaveDayMap.put(key, ++sum);
         }
-        return leaveDaySet;
+        return leaveDayMap;
     }
 }
