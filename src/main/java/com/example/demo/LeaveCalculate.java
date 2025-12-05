@@ -20,8 +20,7 @@ public class LeaveCalculate {
         for (LeaveDate leaveDate : leaveDates) {
             leaveDate.getSetLeaveDayMap().forEach((key, value) -> {
                 int sum = leaveDayMap.getOrDefault(key, 0);
-                sum += value;
-                leaveDayMap.put(key, sum);
+                leaveDayMap.put(key, sum + value);
             });
         }
         return leaveDayMap;
