@@ -24,13 +24,8 @@ public class CalculateService {
     public int calculate(int employeeId, int year, int month) {
         int salary = salaryRepo.findByEmployeeId(employeeId).getValue();
         List<LeaveDto> leaveDtos = leaveRepo.findAllByEmployeeId(employeeId);
-        Set<String> leaveDaySet = new HashSet<>();
-        for (LeaveDto leaveDto : leaveDtos) {
-            long days = ChronoUnit.DAYS.between(leaveDto.getFrom(), leaveDto.getTo()) + 1;
-            for (int day = 0; day < days; day++) {
-                leaveDaySet.add(leaveDto.getFrom().plusDays(day).toString());
-            }
-        }
+        Set<String> leaveDaySet = getSetLeaveDaySet(leaveDtos);
+
         LocalDate startMonth = LocalDate.of(year, month, 1);
         LocalDate endMonth = startMonth.withDayOfMonth(startMonth.lengthOfMonth());
         int leaveDays = 0;
@@ -41,6 +36,19 @@ public class CalculateService {
                 leaveDays++;
             }
         }
+
         return salary - (salary / monthDays) * leaveDays;
+    }
+
+    private Set<String> getSetLeaveDaySet(List<LeaveDto> leaveDtos) {
+        Set<String> leaveDaySet = new HashSet<>();
+
+        for (LeaveDto leaveDto : leaveDtos) {
+            long days = ChronoUnit.DAYS.between(leaveDto.getFrom(), leaveDto.getTo()) + 1;
+            for (int day = 0; day < days; day++) {
+                leaveDaySet.add(leaveDto.getFrom().plusDays(day).toString());
+            }
+        }
+        return leaveDaySet;
     }
 }
