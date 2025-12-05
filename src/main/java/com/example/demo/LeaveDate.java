@@ -10,7 +10,7 @@ public record LeaveDate(LocalDate from, LocalDate to) {
 
 
     public Map<String, Integer> getSetLeaveDayMap() {
-        Map<String, Integer> leaveDayMap = new HashMap();
+        Map<String, Integer> leaveDayMap = new HashMap<>();
         long days = ChronoUnit.DAYS.between(from, to) + 1;
         for (int day = 0; day < days; day++) {
             LocalDate currentProcessDate = from.plusDays(day);
