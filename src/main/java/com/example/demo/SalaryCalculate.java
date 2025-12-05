@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 
 @RequiredArgsConstructor
 public class SalaryCalculate {
@@ -20,7 +19,7 @@ public class SalaryCalculate {
         long monthDays = ChronoUnit.DAYS.between(startMonth, endMonth) + 1;
 
         Salary salary = salaryRepo.findByEmployeeId(employeeId);
-        LeaveCalculate leaveCalculate = new LeaveCalculate( leaveRepo.findAllByEmployeeId(employeeId) );
+        LeaveCalculate leaveCalculate = new LeaveCalculate(leaveRepo.findAllByEmployeeId(employeeId));
 
         int leaveDays = leaveCalculate.getLeaveDays(monthDays, startMonth);
 
