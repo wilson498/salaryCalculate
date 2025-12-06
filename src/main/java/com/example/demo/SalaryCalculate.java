@@ -11,12 +11,12 @@ public record SalaryCalculate(SalaryRepo salaryRepo, LeaveCalculate leaveCalcula
         Salary salary = salaryRepo.findByEmployeeId(employeeId);
 
         int leaveDays = leaveCalculate.getEmployeeLeaveDays(employeeId, year, month);
-        long monthDays = getMonthDays(year, month);
+        long shouldWorkDays = getShouldWorkDays(year, month);
 
-        return salary.getSalaryActual(monthDays, leaveDays);
+        return salary.getSalaryActual(shouldWorkDays, leaveDays);
     }
 
-    private long getMonthDays(int year, int month) {
+    private long getShouldWorkDays(int year, int month) {
         LocalDate startMonth = LocalDate.of(year, month, 1);
         LocalDate endMonth = startMonth.withDayOfMonth(startMonth.lengthOfMonth());
         return ChronoUnit.DAYS.between(startMonth, endMonth) + 1;
