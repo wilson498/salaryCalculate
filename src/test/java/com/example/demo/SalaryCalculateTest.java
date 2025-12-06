@@ -38,7 +38,7 @@ class SalaryCalculateTest {
     }
 
     @Test
-    public void 全年沒請假() {
+    public void when_all_year_no_leave_then_salary_is_same() {
         givenEmployeeSalary(1, 31000);
         givenEmployeeLeave(1, List.of());
         int salary = salaryCalculate.calculate(1, 2025, 12);
@@ -47,9 +47,7 @@ class SalaryCalculateTest {
     }
 
     @Test
-    public void 請了一整個月的假() {
-
-
+    public void when_all_month_leave_then_salary_is_zero() {
         givenEmployeeSalary(1, 31000);
         givenEmployeeLeave(1, List.of(
                 createLeaveDto(
@@ -64,7 +62,7 @@ class SalaryCalculateTest {
 
 
     @Test
-    public void 當月請了一天的假() {
+    public void when_one_day_leave_then_salary_minus_1000() {
         givenEmployeeSalary(1, 31000);
         givenEmployeeLeave(1, List.of(
                 createLeaveDto(
@@ -78,7 +76,7 @@ class SalaryCalculateTest {
 
 
     @Test
-    public void 當月請了三天的假並且是拆開的() {
+    public void when_three_day_leave_and_not_same_leave_day_then_salary_minus_3000() {
         givenEmployeeSalary(1, 31000);
         givenEmployeeLeave(1, List.of(
                 createLeaveDto(
@@ -95,7 +93,7 @@ class SalaryCalculateTest {
     }
 
     @Test
-    public void 請假時間比12月早() {
+    public void when_leave_day_before_to_target_month_then_same_salary() {
 
         givenEmployeeSalary(1, 31000);
         givenEmployeeLeave(1, List.of(
@@ -111,7 +109,7 @@ class SalaryCalculateTest {
     }
 
     @Test
-    public void 請假時間比12月晚() {
+    public void when_leave_day_after_to_target_month_then_same_salary() {
         givenEmployeeSalary(1, 31000);
         givenEmployeeLeave(1, List.of(
                 createLeaveDto(
@@ -127,23 +125,7 @@ class SalaryCalculateTest {
 
 
     @Test
-    public void 全年有請假_請假時間比較晚() {
-        givenEmployeeSalary(1, 31000);
-        givenEmployeeLeave(1, List.of(
-                createLeaveDto(
-                        LocalDate.of(2026, 1, 1),
-                        LocalDate.of(2026, 1, 30)
-                )
-        ));
-
-        int salary = salaryCalculate.calculate(1, 2025, 12);
-
-        Assertions.assertEquals(31000, salary);
-    }
-
-    @Test
-    public void 請超過整個月的假() {
-
+    public void when_leave_day_between_target_month_then_salary_is_zero() {
 
         givenEmployeeSalary(1, 31000);
         givenEmployeeLeave(1, List.of(
@@ -158,7 +140,7 @@ class SalaryCalculateTest {
     }
 
     @Test
-    public void 金額有小數() {
+    public void salary_is_float() {
         givenEmployeeSalary(1, 31000);
         givenEmployeeLeave(1, List.of(
                 createLeaveDto(
