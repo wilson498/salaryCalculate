@@ -11,7 +11,6 @@ public class SalaryCalculate {
 
     private final SalaryRepo salaryRepo;
     private final LeaveCalculate leaveCalculate;
-    ;
 
     public int calculate(int employeeId, int year, int month) {
         Salary salary = salaryRepo.findByEmployeeId(employeeId);
