@@ -8,7 +8,7 @@ import java.util.Map;
 public class SalaryRepo {
 
 
-    private final Map<Integer, Salary> salaryMap =new HashMap<>();
+    private final Map<Integer, Salary> salaryMap = new HashMap<>();
 
     public Salary findByEmployeeId(int employeeId) {
         return salaryMap.getOrDefault(employeeId, new Salary(0));
