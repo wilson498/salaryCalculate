@@ -40,16 +40,16 @@ class SalaryCalculateTest {
 
     @Test
     public void when_all_year_no_leave_then_salary_is_same() {
-        givenEmployeeSalary(1, 31000, SalaryType.MONTHLY);
+        givenEmployeeSalary(1, 31_000, SalaryType.MONTHLY);
         givenEmployeeLeave(1, List.of());
         int salary = salaryCalculate.calculate(1, 2025, 12);
 
-        Assertions.assertEquals(31000, salary);
+        Assertions.assertEquals(31_000, salary);
     }
 
     @Test
     public void when_all_month_leave_then_salary_is_zero() {
-        givenEmployeeSalary(1, 31000, SalaryType.MONTHLY);
+        givenEmployeeSalary(1, 31_000, SalaryType.MONTHLY);
         givenEmployeeLeave(1, List.of(
                 createLeaveDto(
                         LocalDate.of(2025, 12, 1),
@@ -64,7 +64,7 @@ class SalaryCalculateTest {
 
     @Test
     public void when_one_day_leave_then_salary_minus_1000() {
-        givenEmployeeSalary(1, 31000, SalaryType.MONTHLY);
+        givenEmployeeSalary(1, 31_000, SalaryType.MONTHLY);
         givenEmployeeLeave(1, List.of(
                 createLeaveDto(
                         LocalDate.of(2025, 12, 1),
@@ -72,13 +72,13 @@ class SalaryCalculateTest {
                 )
         ));
         int salary = salaryCalculate.calculate(1, 2025, 12);
-        Assertions.assertEquals(30000, salary);
+        Assertions.assertEquals(30_000, salary);
     }
 
 
     @Test
     public void when_three_day_leave_and_not_same_leave_day_then_salary_minus_3000() {
-        givenEmployeeSalary(1, 31000, SalaryType.MONTHLY);
+        givenEmployeeSalary(1, 31_000, SalaryType.MONTHLY);
         givenEmployeeLeave(1, List.of(
                 createLeaveDto(
                         LocalDate.of(2025, 12, 1),
@@ -90,13 +90,13 @@ class SalaryCalculateTest {
                 )
         ));
         int salary = salaryCalculate.calculate(1, 2025, 12);
-        Assertions.assertEquals(28000, salary);
+        Assertions.assertEquals(28_000, salary);
     }
 
     @Test
     public void when_leave_day_before_to_target_month_then_same_salary() {
 
-        givenEmployeeSalary(1, 31000, SalaryType.MONTHLY);
+        givenEmployeeSalary(1, 31_000, SalaryType.MONTHLY);
         givenEmployeeLeave(1, List.of(
                 createLeaveDto(
                         LocalDate.of(2025, 11, 1),
@@ -106,12 +106,12 @@ class SalaryCalculateTest {
 
         int salary = salaryCalculate.calculate(1, 2025, 12);
 
-        Assertions.assertEquals(31000, salary);
+        Assertions.assertEquals(31_000, salary);
     }
 
     @Test
     public void when_leave_day_after_to_target_month_then_same_salary() {
-        givenEmployeeSalary(1, 31000, SalaryType.MONTHLY);
+        givenEmployeeSalary(1, 31_000, SalaryType.MONTHLY);
         givenEmployeeLeave(1, List.of(
                 createLeaveDto(
                         LocalDate.of(2026, 1, 1),
@@ -121,14 +121,14 @@ class SalaryCalculateTest {
 
         int salary = salaryCalculate.calculate(1, 2025, 12);
 
-        Assertions.assertEquals(31000, salary);
+        Assertions.assertEquals(31_000, salary);
     }
 
 
     @Test
     public void when_leave_day_between_target_month_then_salary_is_zero() {
 
-        givenEmployeeSalary(1, 31000, SalaryType.MONTHLY);
+        givenEmployeeSalary(1, 31_000, SalaryType.MONTHLY);
         givenEmployeeLeave(1, List.of(
                 createLeaveDto(
                         LocalDate.of(2025, 11, 1),
@@ -142,7 +142,7 @@ class SalaryCalculateTest {
 
     @Test
     public void salary_is_float() {
-        givenEmployeeSalary(1, 31000, SalaryType.MONTHLY);
+        givenEmployeeSalary(1, 31_000, SalaryType.MONTHLY);
         givenEmployeeLeave(1, List.of(
                 createLeaveDto(
                         LocalDate.of(2025, 11, 1),
@@ -152,7 +152,7 @@ class SalaryCalculateTest {
         int salary = salaryCalculate.calculate(1, 2025, 11);
         // 31000/30 = 1033.33333333~~~~~
         // 31000 -1033.3333333=29966.6667 無條件捨去29966
-        Assertions.assertEquals(29966, salary);
+        Assertions.assertEquals(29_966, salary);
     }
 
     @Test
@@ -160,7 +160,33 @@ class SalaryCalculateTest {
         givenEmployeeSalary(1, 1000, SalaryType.DAILY);
         givenEmployeeLeave(1, List.of());
         int salary = salaryCalculate.calculate(1, 2025, 12);
-        Assertions.assertEquals(31000, salary);
+        Assertions.assertEquals(31_000, salary);
+    }
+
+    @Test
+    public void when_salary_type_is_daily_and_all_month_leave_day_then_salary_is_same() {
+        givenEmployeeSalary(1, 1000, SalaryType.DAILY);
+        givenEmployeeLeave(1, List.of(
+                createLeaveDto(
+                        LocalDate.of(2025, 12, 1),
+                        LocalDate.of(2025, 12, 31)
+                )
+        ));
+        int salary = salaryCalculate.calculate(1, 2025, 12);
+        Assertions.assertEquals(0, salary);
+    }
+
+    @Test
+    public void when_salary_type_is_daily_and_one_month_leave_day_then_salary_is_same() {
+        givenEmployeeSalary(1, 1000, SalaryType.DAILY);
+        givenEmployeeLeave(1, List.of(
+                createLeaveDto(
+                        LocalDate.of(2025, 12, 1),
+                        LocalDate.of(2025, 12, 1)
+                )
+        ));
+        int salary = salaryCalculate.calculate(1, 2025, 12);
+        Assertions.assertEquals(30_000, salary);
     }
 
 }
