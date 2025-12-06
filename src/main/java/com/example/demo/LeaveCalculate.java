@@ -1,32 +1,30 @@
 package com.example.demo;
 
-import java.util.HashMap;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class LeaveCalculate {
 
-    private final List<LeaveDate> leaveDates;
     private final Map<String, Integer> leaveDayMap;
 
-    LeaveCalculate(List<LeaveDate> leaveDates) {
-        this.leaveDates = leaveDates;
-        leaveDayMap = getLeaveDayMap();
+    public LeaveCalculate(List<LeaveDate> leaveDates) {
+        leaveDayMap = getLeaveDayMap(leaveDates);
     }
 
-    private Map<String, Integer> getLeaveDayMap() {
-        return leaveDates.stream().collect(
-                HashMap::new,
-                (map, leaveDate) -> leaveDate.getLeaveDayMap().forEach(
-                        (key, value) -> {
-                            int sum = map.getOrDefault(key, 0);
-                            map.put(key, sum + value);
-                        }
-                ),
-                HashMap::putAll);
+    private Map<String, Integer> getLeaveDayMap(List<LeaveDate> leaveDates) {
+        return leaveDates.stream()
+                .flatMap(leaveDate -> leaveDate.getLeaveDayMap().entrySet().stream())
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        Integer::sum
+                ));
     }
 
     public int getLeaveDays(int year, int month) {
-        return leaveDayMap.getOrDefault(year + "-" + month, 0);
+        LocalDate date = LocalDate.of(year, month, 1);
+        return leaveDayMap.getOrDefault(date.getYear() + "-" + date.getMonthValue(), 0);
     }
 }
