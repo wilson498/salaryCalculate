@@ -189,4 +189,37 @@ class SalaryCalculateTest {
         Assertions.assertEquals(30_000, salary);
     }
 
+    @Test
+    public void when_salary_type_is_hourly_and_no_leave_day_then_salary_is_same() {
+        givenEmployeeSalary(1, 125, SalaryType.HOURLY);
+        givenEmployeeLeave(1, List.of());
+        int salary = salaryCalculate.calculate(1, 2025, 12);
+        Assertions.assertEquals(31_000, salary);
+    }
+
+    @Test
+    public void when_salary_type_is_hourly_and_all_month_leave_day_then_salary_is_same() {
+        givenEmployeeSalary(1, 125, SalaryType.HOURLY);
+        givenEmployeeLeave(1, List.of(
+                createLeaveDto(
+                        LocalDate.of(2025, 12, 1),
+                        LocalDate.of(2025, 12, 31)
+                )
+        ));
+        int salary = salaryCalculate.calculate(1, 2025, 12);
+        Assertions.assertEquals(0, salary);
+    }
+
+    @Test
+    public void when_salary_type_is_hours_and_one_month_leave_day_then_salary_is_same() {
+        givenEmployeeSalary(1, 125, SalaryType.HOURLY);
+        givenEmployeeLeave(1, List.of(
+                createLeaveDto(
+                        LocalDate.of(2025, 12, 1),
+                        LocalDate.of(2025, 12, 1)
+                )
+        ));
+        int salary = salaryCalculate.calculate(1, 2025, 12);
+        Assertions.assertEquals(30_000, salary);
+    }
 }
