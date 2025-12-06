@@ -1,16 +1,11 @@
 package com.example.demo;
 
 import com.example.demo.repo.SalaryRepo;
-import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-@RequiredArgsConstructor
-public class SalaryCalculate {
-
-    private final SalaryRepo salaryRepo;
-    private final LeaveCalculate leaveCalculate;
+public record SalaryCalculate(SalaryRepo salaryRepo, LeaveCalculate leaveCalculate) {
 
     public int calculate(int employeeId, int year, int month) {
         Salary salary = salaryRepo.findByEmployeeId(employeeId);
