@@ -1,19 +1,18 @@
 package com.example.demo;
 
 import com.example.demo.repo.LeaveRepo;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+
+@RequiredArgsConstructor
 public class LeaveCalculate {
 
     private final LeaveRepo leaveRepo;
-
-    public LeaveCalculate(LeaveRepo leaveRepo) {
-        this.leaveRepo = leaveRepo;
-    }
 
     private Map<String, Integer> aggregateLeaveDaysByMonth(List<LeaveDate> leaveDates) {
         return leaveDates.stream()
