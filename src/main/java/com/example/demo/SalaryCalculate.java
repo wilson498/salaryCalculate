@@ -21,7 +21,7 @@ public class SalaryCalculate {
         Salary salary = salaryRepo.findByEmployeeId(employeeId);
         LeaveCalculate leaveCalculate = new LeaveCalculate(leaveRepo.findAllByEmployeeId(employeeId));
 
-        int leaveDays = leaveCalculate.getLeaveDays(startMonth);
+        int leaveDays = leaveCalculate.getLeaveDays(year, month);
 
         return salary.getSalaryActual(monthDays, leaveDays);
     }
