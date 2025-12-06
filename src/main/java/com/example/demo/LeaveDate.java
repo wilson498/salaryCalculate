@@ -12,7 +12,6 @@ public record LeaveDate(LocalDate from, LocalDate to) {
         return currentDate.getYear() + "-" + currentDate.getMonthValue();
     }
 
-
     public Map<String, Integer> getLeaveDayMap() {
         Map<String, Integer> leaveDayMap = new HashMap<>();
         long totalDays = getTotalDays();
