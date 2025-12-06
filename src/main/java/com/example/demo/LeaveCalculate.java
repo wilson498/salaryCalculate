@@ -16,8 +16,11 @@ public class LeaveCalculate {
 
     public int getLeaveDays(int year, int month) {
         LocalDate date = LocalDate.of(year, month, 1);
-        String monthKey = date.getYear() + "-" + date.getMonthValue();
-        return leaveDayMapByMonth.getOrDefault(monthKey, 0);
+        return leaveDayMapByMonth.getOrDefault(getMonthKey(date), 0);
+    }
+
+    private String getMonthKey(LocalDate date) {
+        return date.getYear() + "-" + date.getMonthValue();
     }
 
     private Map<String, Integer> aggregateLeaveDaysByMonth(List<LeaveDate> leaveDates) {
@@ -30,7 +33,7 @@ public class LeaveCalculate {
                 ));
     }
 
-    int getEmployeeLeaveDays(int employeeId, int year, int month, SalaryCalculate salaryCalculate) {
+    int getEmployeeLeaveDays(int employeeId, int year, int month) {
         leaveDayMapByMonth.clear();
         leaveDayMapByMonth.putAll(aggregateLeaveDaysByMonth(leaveRepo.findAllByEmployeeId(employeeId)));
         return getLeaveDays(year, month);
