@@ -11,7 +11,11 @@ import java.util.stream.Collectors;
 public class LeaveCalculate {
 
     private final Map<String, Integer> leaveDayMapByMonth = new HashMap<>();
-    private final LeaveRepo leaveRepo = new LeaveRepo();
+    private final LeaveRepo leaveRepo;
+
+    public LeaveCalculate(LeaveRepo leaveRepo) {
+        this.leaveRepo = leaveRepo;
+    }
 
 
     public int getLeaveDays(int year, int month) {
