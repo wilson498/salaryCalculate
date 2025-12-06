@@ -4,25 +4,31 @@ import com.example.demo.repo.LeaveRepo;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
 public record LeaveCalculate(LeaveRepo leaveRepo) {
 
-    private Map<String, Integer> aggregateLeaveDaysByMonth(List<LeaveDate> leaveDates) {
+
+    private Set<String> aggregateLeaveDaysSet(List<LeaveDate> leaveDates) {
         return leaveDates.stream()
-                .flatMap(leaveDate -> leaveDate.getLeaveDayMap().entrySet().stream())
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        Integer::sum
-                ));
+                .flatMap(leaveDate -> leaveDate.getLeaveDaySet().stream())
+                .collect(Collectors.toSet());
     }
 
     public int getEmployeeLeaveDays(int employeeId, int year, int month) {
-        Map<String, Integer> leaveDayMapByMonth = aggregateLeaveDaysByMonth(leaveRepo.findAllByEmployeeId(employeeId));
+        Set<String> leaveDaySet = aggregateLeaveDaysSet(leaveRepo.findAllByEmployeeId(employeeId));
         LocalDate date = LocalDate.of(year, month, 1);
-        return leaveDayMapByMonth.getOrDefault(LeaveDate.getMonthKey(date), 0);
+        int leaveDaysInMonth = date.lengthOfMonth();
+        int leaveDays = 0;
+        for (int day = 0; day < leaveDaysInMonth; day++) {
+            String daysKey = LeaveDate.getDaysKey(date.plusDays(day));
+            if (leaveDaySet.contains(daysKey)) {
+                leaveDays++;
+            }
+        }
+        return leaveDays;
     }
+
 }
