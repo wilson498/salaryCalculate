@@ -15,7 +15,7 @@ public class LeaveRepo {
         return leaveDtoMap.getOrDefault(employeeId, new ArrayList<>());
     }
 
-    public void save(int i, List<LeaveDate> leaveDate) {
-        leaveDtoMap.put(i, leaveDate);
+    public void save(int employeeId, List<LeaveDate> leaveDates) {
+        leaveDtoMap.put(employeeId, leaveDates);
     }
 }

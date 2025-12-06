@@ -14,7 +14,7 @@ public class SalaryRepo {
         return salaryMap.getOrDefault(employeeId, new Salary(0));
     }
 
-    public void save(int id, Salary salary) {
-        salaryMap.putIfAbsent(id, salary);
+    public void save(int employeeId, Salary salary) {
+        salaryMap.putIfAbsent(employeeId, salary);
     }
 }
