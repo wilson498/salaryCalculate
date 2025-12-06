@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class LeaveRepo {
 
-    private final Map<Integer, List<LeaveDate>> leaveDtoMap = new HashMap<>();
+    private static final Map<Integer, List<LeaveDate>> leaveDtoMap = new HashMap<>();
 
     public List<LeaveDate> findAllByEmployeeId(int employeeId) {
         return leaveDtoMap.getOrDefault(employeeId, new ArrayList<>());
