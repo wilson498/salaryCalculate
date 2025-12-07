@@ -4,7 +4,4 @@ public enum LeaveType {
     SPECIAL,
     SICK,
     PERSONAL,
-    BEREAVEMENT,
-    MARRIAGE,
-
 }

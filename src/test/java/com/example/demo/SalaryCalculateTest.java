@@ -32,8 +32,8 @@ class SalaryCalculateTest {
         salaryRepo.save(1, salaryDto);
     }
 
-    private LeaveDate createLeaveDto(LocalDate from, LocalDate to) {
-        return new LeaveDate(from, to);
+    private LeaveDate createLeaveDto(LocalDate from, LocalDate to, LeaveType leaveType) {
+        return new LeaveDate(from, to, leaveType);
     }
 
     @Nested
@@ -57,7 +57,7 @@ class SalaryCalculateTest {
             givenEmployeeLeave(List.of(
                     createLeaveDto(
                             LocalDate.of(2025, 12, 1),
-                            LocalDate.of(2025, 12, 31)
+                            LocalDate.of(2025, 12, 31), LeaveType.PERSONAL
                     )
             ));
             int salary = salaryCalculate.calculate(1, 2025, 12);
@@ -72,7 +72,7 @@ class SalaryCalculateTest {
             givenEmployeeLeave(List.of(
                     createLeaveDto(
                             LocalDate.of(2025, 12, 1),
-                            LocalDate.of(2025, 12, 1)
+                            LocalDate.of(2025, 12, 1), LeaveType.PERSONAL
                     )
             ));
             int salary = salaryCalculate.calculate(1, 2025, 12);
@@ -86,11 +86,11 @@ class SalaryCalculateTest {
             givenEmployeeLeave(List.of(
                     createLeaveDto(
                             LocalDate.of(2025, 12, 1),
-                            LocalDate.of(2025, 12, 1)
+                            LocalDate.of(2025, 12, 1), LeaveType.PERSONAL
                     ),
                     createLeaveDto(
                             LocalDate.of(2025, 12, 6),
-                            LocalDate.of(2025, 12, 7)
+                            LocalDate.of(2025, 12, 7), LeaveType.PERSONAL
                     )
             ));
             int salary = salaryCalculate.calculate(1, 2025, 12);
@@ -107,7 +107,7 @@ class SalaryCalculateTest {
                 givenEmployeeLeave(List.of(
                         createLeaveDto(
                                 LocalDate.of(2025, 11, 1),
-                                LocalDate.of(2025, 11, 30)
+                                LocalDate.of(2025, 11, 30), LeaveType.PERSONAL
                         )
                 ));
 
@@ -122,7 +122,7 @@ class SalaryCalculateTest {
                 givenEmployeeLeave(List.of(
                         createLeaveDto(
                                 LocalDate.of(2026, 1, 1),
-                                LocalDate.of(2026, 1, 30)
+                                LocalDate.of(2026, 1, 30), LeaveType.PERSONAL
                         )
                 ));
 
@@ -137,7 +137,7 @@ class SalaryCalculateTest {
                 givenEmployeeLeave(List.of(
                         createLeaveDto(
                                 LocalDate.of(2025, 11, 1),
-                                LocalDate.of(2026, 1, 31)
+                                LocalDate.of(2026, 1, 31), LeaveType.PERSONAL
                         )
                 ));
                 int salary = salaryCalculate.calculate(1, 2025, 12);
@@ -153,7 +153,7 @@ class SalaryCalculateTest {
             givenEmployeeLeave(List.of(
                     createLeaveDto(
                             LocalDate.of(2025, 11, 1),
-                            LocalDate.of(2025, 11, 1)
+                            LocalDate.of(2025, 11, 1), LeaveType.PERSONAL
                     )
             ));
             int salary = salaryCalculate.calculate(1, 2025, 11);
@@ -183,7 +183,7 @@ class SalaryCalculateTest {
             givenEmployeeLeave(List.of(
                     createLeaveDto(
                             LocalDate.of(2025, 12, 1),
-                            LocalDate.of(2025, 12, 31)
+                            LocalDate.of(2025, 12, 31), LeaveType.PERSONAL
                     )
             ));
             int salary = salaryCalculate.calculate(1, 2025, 12);
@@ -197,7 +197,7 @@ class SalaryCalculateTest {
             givenEmployeeLeave(List.of(
                     createLeaveDto(
                             LocalDate.of(2025, 12, 1),
-                            LocalDate.of(2025, 12, 1)
+                            LocalDate.of(2025, 12, 1), LeaveType.PERSONAL
                     )
             ));
             int salary = salaryCalculate.calculate(1, 2025, 12);
@@ -225,7 +225,7 @@ class SalaryCalculateTest {
             givenEmployeeLeave(List.of(
                     createLeaveDto(
                             LocalDate.of(2025, 12, 1),
-                            LocalDate.of(2025, 12, 31)
+                            LocalDate.of(2025, 12, 31), LeaveType.PERSONAL
                     )
             ));
             int salary = salaryCalculate.calculate(1, 2025, 12);
@@ -239,7 +239,7 @@ class SalaryCalculateTest {
             givenEmployeeLeave(List.of(
                     createLeaveDto(
                             LocalDate.of(2025, 12, 1),
-                            LocalDate.of(2025, 12, 1)
+                            LocalDate.of(2025, 12, 1), LeaveType.PERSONAL
                     )
             ));
             int salary = salaryCalculate.calculate(1, 2025, 12);
@@ -267,7 +267,7 @@ class SalaryCalculateTest {
             givenEmployeeLeave(List.of(
                     createLeaveDto(
                             LocalDate.of(2025, 12, 1),
-                            LocalDate.of(2025, 12, 31)
+                            LocalDate.of(2025, 12, 31), LeaveType.PERSONAL
                     )
             ));
             int salary = salaryCalculate.calculate(1, 2025, 12);
@@ -281,7 +281,7 @@ class SalaryCalculateTest {
             givenEmployeeLeave(List.of(
                     createLeaveDto(
                             LocalDate.of(2025, 12, 1),
-                            LocalDate.of(2025, 12, 1)
+                            LocalDate.of(2025, 12, 1), LeaveType.PERSONAL
                     )
             ));
             int salary = salaryCalculate.calculate(1, 2025, 12);
@@ -309,7 +309,7 @@ class SalaryCalculateTest {
             givenEmployeeLeave(List.of(
                     createLeaveDto(
                             LocalDate.of(2025, 12, 1),
-                            LocalDate.of(2025, 12, 31)
+                            LocalDate.of(2025, 12, 31), LeaveType.PERSONAL
                     )
             ));
             int salary = salaryCalculate.calculate(1, 2025, 12);
@@ -323,11 +323,138 @@ class SalaryCalculateTest {
             givenEmployeeLeave(List.of(
                     createLeaveDto(
                             LocalDate.of(2025, 12, 1),
-                            LocalDate.of(2025, 12, 1)
+                            LocalDate.of(2025, 12, 1), LeaveType.PERSONAL
                     )
             ));
             int salary = salaryCalculate.calculate(1, 2025, 12);
             Assertions.assertEquals(30_000, salary);
+        }
+    }
+    @Nested
+    @Tag("monthly-salary")
+    class LeaveTypeTests {
+
+        @Test
+        @Tag("basic")
+        public void when_all_year_no_leave_then_salary_is_same() {
+            givenEmployeeSalary(31_000, SalaryType.MONTHLY);
+            givenEmployeeLeave(List.of());
+            int salary = salaryCalculate.calculate(1, 2025, 12);
+
+            Assertions.assertEquals(31_000, salary);
+        }
+
+        @Test
+        @Tag("basic")
+        public void when_all_month_leave_then_salary_is_zero() {
+            givenEmployeeSalary(31_000, SalaryType.MONTHLY);
+            givenEmployeeLeave(List.of(
+                    createLeaveDto(
+                            LocalDate.of(2025, 12, 1),
+                            LocalDate.of(2025, 12, 31), LeaveType.SICK
+                    )
+            ));
+            int salary = salaryCalculate.calculate(1, 2025, 12);
+
+            Assertions.assertEquals(15_500, salary);
+        }
+
+        @Test
+        @Tag("basic")
+        public void when_one_day_leave_then_salary_minus_1000() {
+            givenEmployeeSalary(31_000, SalaryType.MONTHLY);
+            givenEmployeeLeave(List.of(
+                    createLeaveDto(
+                            LocalDate.of(2025, 12, 1),
+                            LocalDate.of(2025, 12, 1), LeaveType.SICK
+                    )
+            ));
+            int salary = salaryCalculate.calculate(1, 2025, 12);
+            Assertions.assertEquals(30_500, salary);
+        }
+
+        @Test
+        @Tag("basic")
+        public void when_three_day_leave_and_not_same_leave_day_then_salary_minus_3000() {
+            givenEmployeeSalary(31_000, SalaryType.MONTHLY);
+            givenEmployeeLeave(List.of(
+                    createLeaveDto(
+                            LocalDate.of(2025, 12, 1),
+                            LocalDate.of(2025, 12, 1), LeaveType.SICK
+                    ),
+                    createLeaveDto(
+                            LocalDate.of(2025, 12, 6),
+                            LocalDate.of(2025, 12, 7), LeaveType.SPECIAL
+                    )
+            ));
+            int salary = salaryCalculate.calculate(1, 2025, 12);
+            Assertions.assertEquals(30_500, salary);
+        }
+
+        @Nested
+        @Tag("edge-case")
+        class EdgeCaseTests {
+
+            @Test
+            public void when_leave_day_before_to_target_month_then_same_salary() {
+                givenEmployeeSalary(31_000, SalaryType.MONTHLY);
+                givenEmployeeLeave(List.of(
+                        createLeaveDto(
+                                LocalDate.of(2025, 11, 1),
+                                LocalDate.of(2025, 11, 30), LeaveType.SICK
+                        )
+                ));
+
+                int salary = salaryCalculate.calculate(1, 2025, 12);
+
+                Assertions.assertEquals(31_000, salary);
+            }
+
+            @Test
+            public void when_leave_day_after_to_target_month_then_same_salary() {
+                givenEmployeeSalary(31_000, SalaryType.MONTHLY);
+                givenEmployeeLeave(List.of(
+                        createLeaveDto(
+                                LocalDate.of(2026, 1, 1),
+                                LocalDate.of(2026, 1, 30), LeaveType.SICK
+                        )
+                ));
+
+                int salary = salaryCalculate.calculate(1, 2025, 12);
+
+                Assertions.assertEquals(31_000, salary);
+            }
+
+            @Test
+            public void when_leave_day_between_target_month_then_salary_is_zero() {
+                givenEmployeeSalary(31_000, SalaryType.MONTHLY);
+                givenEmployeeLeave(List.of(
+                        createLeaveDto(
+                                LocalDate.of(2025, 11, 1),
+                                LocalDate.of(2026, 1, 31), LeaveType.SICK
+                        )
+                ));
+                int salary = salaryCalculate.calculate(1, 2025, 12);
+
+                Assertions.assertEquals(15_500, salary);
+            }
+        }
+
+        @Test
+        @Tag("calculation")
+        public void salary_is_float() {
+            givenEmployeeSalary(31_000, SalaryType.MONTHLY);
+            givenEmployeeLeave(List.of(
+                    createLeaveDto(
+                            LocalDate.of(2025, 11, 1),
+                            LocalDate.of(2025, 11, 1), LeaveType.SICK
+                    )
+            ));
+            int salary = salaryCalculate.calculate(1, 2025, 11);
+            // 31000/30 = 1033.33333333~~~~~
+            // 31000 - (1033.3333333)/2 = 30483.3333335 無條件捨去30483
+
+            Assertions.assertEquals(30_483, salary);
         }
     }
 }

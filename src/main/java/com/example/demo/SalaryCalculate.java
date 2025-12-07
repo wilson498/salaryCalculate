@@ -9,7 +9,7 @@ public record SalaryCalculate(SalaryRepo salaryRepo, LeaveCalculate leaveCalcula
 
     public int calculate(int employeeId, int year, int month) {
         Salary salary = salaryRepo.findByEmployeeId(employeeId);
-        int leaveDays = leaveCalculate.getEmployeeLeaveDays(employeeId, year, month);
+        double leaveDays = leaveCalculate.getEmployeeLeaveDays(employeeId, year, month);
         long shouldWorkDays = getShouldWorkDays(year, month);
 
         return salary.getSalaryActual(shouldWorkDays, leaveDays);

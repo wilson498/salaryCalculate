@@ -4,19 +4,16 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-public record LeaveDate(LocalDate from, LocalDate to) {
+public record LeaveDate(LocalDate from, LocalDate to, LeaveType leaveType) {
 
-    public static String getDateKey(LocalDate currentProcessDate) {
-        return currentProcessDate.toString();
-    }
-
-    public Set<String> getLeaveDaySet() {
-        Set<String> leaveDaySet = new HashSet<>();
+    public Set<LeaveDate> getLeaveDaySet() {
+        Set<LeaveDate> leaveDaySet = new HashSet<>();
         if (!isInRange(from)) return leaveDaySet;
+
         int day = 0;
         LocalDate currentProcessDate = from.plusDays(day);
         do {
-            leaveDaySet.add(getDateKey(currentProcessDate));
+            leaveDaySet.add(new LeaveDate(currentProcessDate, currentProcessDate, leaveType));
             currentProcessDate = from.plusDays(++day);
         } while (isInRange(currentProcessDate));
         return leaveDaySet;
@@ -25,5 +22,6 @@ public record LeaveDate(LocalDate from, LocalDate to) {
     private boolean isInRange(LocalDate fromPlusDay) {
         return !fromPlusDay.isAfter(to);
     }
+
 
 }
