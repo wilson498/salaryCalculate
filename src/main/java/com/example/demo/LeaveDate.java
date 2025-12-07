@@ -13,10 +13,11 @@ public record LeaveDate(LocalDate from, LocalDate to) {
     public Set<String> getLeaveDaySet() {
         Set<String> leaveDaySet = new HashSet<>();
         int day = 0;
+        LocalDate currentProcessDate = from.plusDays(day);
         do {
-            LocalDate currentProcessDate = from.plusDays(day);
             leaveDaySet.add(getDateKey(currentProcessDate));
-        } while (isInRange(from.plusDays(++day)));
+            currentProcessDate = from.plusDays(++day);
+        } while (isInRange(currentProcessDate));
         return leaveDaySet;
     }
 
