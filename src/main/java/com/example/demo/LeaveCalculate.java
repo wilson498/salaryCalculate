@@ -3,8 +3,6 @@ package com.example.demo;
 import com.example.demo.repo.LeaveRepo;
 import lombok.extern.slf4j.Slf4j;
 
-import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -16,12 +14,12 @@ public record LeaveCalculate(LeaveRepo leaveRepo) {
 
     private Set<LeaveDate> aggregateLeaveDaysSet(List<LeaveDate> leaveDates) {
         return leaveDates.stream()
-                .flatMap(leaveDate -> leaveDate.getLeaveDaySet().stream())
+                .flatMap(leaveDate -> leaveDate.getLeaveDateSet().stream())
                 .collect(Collectors.toSet());
     }
 
     public double getEmployeeLeaveDays(int employeeId, int year, int month) {
-        Set<LeaveDate> leaveDaySet = aggregateLeaveDaysSet(leaveRepo.findAllByEmployeeId(employeeId))
+        Set<LeaveDate> leaveDateSet = aggregateLeaveDaysSet(leaveRepo.findAllByEmployeeId(employeeId))
                 .stream()
                 .filter(leaveDate ->
                         leaveDate.from().getYear() == year && leaveDate.from().getMonthValue() == month
@@ -29,15 +27,24 @@ public record LeaveCalculate(LeaveRepo leaveRepo) {
 
         double leaveDays = 0.0;
 
-        for (LeaveDate leaveDate : leaveDaySet) {
-            if (leaveDate.leaveType() == LeaveType.PERSONAL) {
-                leaveDays++;
-            } else if (leaveDate.leaveType() == LeaveType.SICK ){
-                leaveDays += 0.5;
-            }
+        for (LeaveDate leaveDate : leaveDateSet) {
+            leaveDays += getLeaveDays(leaveDate);
         }
 
         return leaveDays;
+    }
+
+    private double getLeaveDays(LeaveDate leaveDate) {
+        if (leaveDate.leaveType() == LeaveType.PERSONAL) {
+            return 1;
+        }
+        if (leaveDate.leaveType() == LeaveType.SICK) {
+            return .5;
+        }
+        if(leaveDate.leaveType() == LeaveType.SPECIAL){
+            return 0;
+        }
+        throw new IllegalArgumentException("Unknown leave type");
     }
 
 }

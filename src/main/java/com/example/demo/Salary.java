@@ -14,7 +14,7 @@ public record Salary(int value, SalaryType salaryType) {
     }
 
     private double getDailySalary(long shouldWorkDays) {
-        return salaryType.isRequestShouldWorkDays() ?
+        return salaryType.shouldCalculateWorkDays() ?
                 (double) value / shouldWorkDays :
                 value / salaryType.getWorkDays();
     }

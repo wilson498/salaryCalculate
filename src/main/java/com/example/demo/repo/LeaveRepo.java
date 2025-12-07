@@ -9,13 +9,13 @@ import java.util.Map;
 
 public class LeaveRepo {
 
-    private final Map<Integer, List<LeaveDate>> leaveDtoMap = new HashMap<>();
+    private final Map<Integer, List<LeaveDate>> leaveDateMap = new HashMap<>();
 
     public List<LeaveDate> findAllByEmployeeId(int employeeId) {
-        return leaveDtoMap.getOrDefault(employeeId, new ArrayList<>());
+        return leaveDateMap.getOrDefault(employeeId, new ArrayList<>());
     }
 
     public void save(int employeeId, List<LeaveDate> leaveDates) {
-        leaveDtoMap.put(employeeId, leaveDates);
+        leaveDateMap.put(employeeId, leaveDates);
     }
 }

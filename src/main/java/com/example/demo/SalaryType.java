@@ -21,7 +21,7 @@ public enum SalaryType {
     }
 
 
-    public boolean isRequestShouldWorkDays() {
+    public boolean shouldCalculateWorkDays() {
         return workDays < 0;
     }
 }
