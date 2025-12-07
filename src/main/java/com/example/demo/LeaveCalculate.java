@@ -19,19 +19,23 @@ public record LeaveCalculate(LeaveRepo leaveRepo) {
     }
 
     public double getEmployeeLeaveDays(int employeeId, int year, int month) {
-        Set<LeaveDate> leaveDateSet = aggregateLeaveDaysSet(leaveRepo.findAllByEmployeeId(employeeId))
-                .stream()
-                .filter(leaveDate ->
-                        leaveDate.from().getYear() == year && leaveDate.from().getMonthValue() == month
-                ).collect(Collectors.toSet());
+        Set<LeaveDate> leaveDateSet = aggregateLeaveDaysSet(leaveRepo.findAllByEmployeeId(employeeId));
+        Set<LeaveDate> filterLeaveDateSet = getFilterLeaveDateSet(year, month, leaveDateSet);
 
         double leaveDays = 0.0;
 
-        for (LeaveDate leaveDate : leaveDateSet) {
+        for (LeaveDate leaveDate : filterLeaveDateSet) {
             leaveDays += getLeaveDays(leaveDate);
         }
 
         return leaveDays;
+    }
+
+    private Set<LeaveDate> getFilterLeaveDateSet(int year, int month, Set<LeaveDate> leaveDateSet) {
+        return leaveDateSet.stream()
+                .filter(leaveDate ->
+                        leaveDate.from().getYear() == year && leaveDate.from().getMonthValue() == month
+                ).collect(Collectors.toSet());
     }
 
     private double getLeaveDays(LeaveDate leaveDate) {
@@ -41,7 +45,7 @@ public record LeaveCalculate(LeaveRepo leaveRepo) {
         if (leaveDate.leaveType() == LeaveType.SICK) {
             return .5;
         }
-        if(leaveDate.leaveType() == LeaveType.SPECIAL){
+        if (leaveDate.leaveType() == LeaveType.SPECIAL) {
             return 0;
         }
         throw new IllegalArgumentException("Unknown leave type");
