@@ -5,6 +5,9 @@ public enum SalaryType {
 
     DAILY,
 
-    MONTHLY,
+    WEEKLY,
 
+    FORTNIGHTLY,
+
+    MONTHLY
 }

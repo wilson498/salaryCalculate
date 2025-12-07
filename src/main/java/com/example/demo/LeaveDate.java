@@ -26,5 +26,4 @@ public record LeaveDate(LocalDate from, LocalDate to) {
         return !fromPlusDay.isAfter(to);
     }
 
-
 }

@@ -17,11 +17,15 @@ public record Salary(int value, SalaryType salaryType) {
         if (salaryType == SalaryType.MONTHLY) {
             return (double) value / shouldWorkDays;
         }
-
-        if (salaryType == SalaryType.HOURLY) {
-            return (double) value * 8;
+        if (salaryType == SalaryType.WEEKLY) {
+            return (double) value / 7;
         }
-
+        if (salaryType == SalaryType.FORTNIGHTLY) {
+            return (double) value / 14;
+        }
+        if (salaryType == SalaryType.HOURLY) {
+            return (double) value / ((double) 1 / 8);
+        }
         return value;
     }
 }
