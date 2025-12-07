@@ -8,13 +8,13 @@ public record LeaveDate(LocalDate from, LocalDate to, LeaveType leaveType) {
 
     public Set<LeaveDate> getLeaveDateSet() {
         Set<LeaveDate> leaveDateSet = new HashSet<>();
-        if (!isInRange(from)) return leaveDateSet;
-        int dayOffset = 0;
-        LocalDate currentDate = from.plusDays(dayOffset);
-        do {
+
+        LocalDate currentDate = from;
+        while (isInRange(currentDate)) {
             leaveDateSet.add(new LeaveDate(currentDate, currentDate, leaveType));
-            currentDate = from.plusDays(++dayOffset);
-        } while (isInRange(currentDate));
+            currentDate = currentDate.plusDays(1);
+        }
+        ;
         return leaveDateSet;
     }
 

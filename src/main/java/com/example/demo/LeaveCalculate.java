@@ -10,17 +10,17 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public record LeaveCalculate(LeaveRepo leaveRepo) {
-    private static double PERSONAL_LEAVE_DAYS = 1.0;
-    private static double SICK_LEAVE_DAYS = 0.5;
-    private static double SPECIAL_LEAVE_DAYS = 0.0;
+    private static final double PERSONAL_LEAVE_DAYS = 1.0;
+    private static final double SICK_LEAVE_DAYS = 0.5;
+    private static final double SPECIAL_LEAVE_DAYS = 0.0;
 
     public double getEmployeeLeaveDays(int employeeId, int year, int month) {
-        Set<LeaveDate> leaveDateSet = aggregateLeaveDaysSet(leaveRepo.findAllByEmployeeId(employeeId));
-        Set<LeaveDate> filterLeaveDateSet = getFilterLeaveDateSet(year, month, leaveDateSet);
+        Set<LeaveDate> allLeaveDateSet = aggregateLeaveDaysSet(leaveRepo.findAllByEmployeeId(employeeId));
+        Set<LeaveDate> monthlyLeaveDates = getFilterLeaveDateSet(year, month, allLeaveDateSet);
 
         double totalLeaveDays = 0.0;
 
-        for (LeaveDate leaveDate : filterLeaveDateSet) {
+        for (LeaveDate leaveDate : monthlyLeaveDates) {
             totalLeaveDays += getLeaveDays(leaveDate);
         }
 
