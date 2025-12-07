@@ -10,25 +10,27 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public record LeaveCalculate(LeaveRepo leaveRepo) {
-
-
-    private Set<LeaveDate> aggregateLeaveDaysSet(List<LeaveDate> leaveDates) {
-        return leaveDates.stream()
-                .flatMap(leaveDate -> leaveDate.getLeaveDateSet().stream())
-                .collect(Collectors.toSet());
-    }
+    private static double PERSONAL_LEAVE_DAYS = 1.0;
+    private static double SICK_LEAVE_DAYS = 0.5;
+    private static double SPECIAL_LEAVE_DAYS = 0.0;
 
     public double getEmployeeLeaveDays(int employeeId, int year, int month) {
         Set<LeaveDate> leaveDateSet = aggregateLeaveDaysSet(leaveRepo.findAllByEmployeeId(employeeId));
         Set<LeaveDate> filterLeaveDateSet = getFilterLeaveDateSet(year, month, leaveDateSet);
 
-        double leaveDays = 0.0;
+        double totalLeaveDays = 0.0;
 
         for (LeaveDate leaveDate : filterLeaveDateSet) {
-            leaveDays += getLeaveDays(leaveDate);
+            totalLeaveDays += getLeaveDays(leaveDate);
         }
 
-        return leaveDays;
+        return totalLeaveDays;
+    }
+
+    private Set<LeaveDate> aggregateLeaveDaysSet(List<LeaveDate> leaveDates) {
+        return leaveDates.stream()
+                .flatMap(leaveDate -> leaveDate.getLeaveDateSet().stream())
+                .collect(Collectors.toSet());
     }
 
     private Set<LeaveDate> getFilterLeaveDateSet(int year, int month, Set<LeaveDate> leaveDateSet) {
@@ -39,16 +41,11 @@ public record LeaveCalculate(LeaveRepo leaveRepo) {
     }
 
     private double getLeaveDays(LeaveDate leaveDate) {
-        if (leaveDate.leaveType() == LeaveType.PERSONAL) {
-            return 1;
-        }
-        if (leaveDate.leaveType() == LeaveType.SICK) {
-            return .5;
-        }
-        if (leaveDate.leaveType() == LeaveType.SPECIAL) {
-            return 0;
-        }
-        throw new IllegalArgumentException("Unknown leave type");
+        return switch (leaveDate.leaveType()) {
+            case PERSONAL -> PERSONAL_LEAVE_DAYS;
+            case SICK -> SICK_LEAVE_DAYS;
+            case SPECIAL -> SPECIAL_LEAVE_DAYS;
+        };
     }
 
 }

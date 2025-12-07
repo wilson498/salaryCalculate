@@ -9,17 +9,17 @@ public record LeaveDate(LocalDate from, LocalDate to, LeaveType leaveType) {
     public Set<LeaveDate> getLeaveDateSet() {
         Set<LeaveDate> leaveDateSet = new HashSet<>();
         if (!isInRange(from)) return leaveDateSet;
-        int day = 0;
-        LocalDate currentProcessDate = from.plusDays(day);
+        int dayOffset = 0;
+        LocalDate currentDate = from.plusDays(dayOffset);
         do {
-            leaveDateSet.add(new LeaveDate(currentProcessDate, currentProcessDate, leaveType));
-            currentProcessDate = from.plusDays(++day);
-        } while (isInRange(currentProcessDate));
+            leaveDateSet.add(new LeaveDate(currentDate, currentDate, leaveType));
+            currentDate = from.plusDays(++dayOffset);
+        } while (isInRange(currentDate));
         return leaveDateSet;
     }
 
-    private boolean isInRange(LocalDate fromPlusDay) {
-        return !fromPlusDay.isAfter(to);
+    private boolean isInRange(LocalDate dateToCheck) {
+        return !dateToCheck.isAfter(to);
     }
 
 
