@@ -1,13 +1,27 @@
 package com.example.demo;
 
+import lombok.Getter;
+
 public enum SalaryType {
-    HOURLY,
+    HOURLY((double) 1 / 8),
 
-    DAILY,
+    DAILY(1),
 
-    WEEKLY,
+    WEEKLY(7),
 
-    FORTNIGHTLY,
+    FORTNIGHTLY(14),
 
-    MONTHLY
+    MONTHLY(-1);
+
+    @Getter
+    private final double workDays;
+
+    SalaryType(double workDays) {
+        this.workDays = workDays;
+    }
+
+
+    public boolean isRequestShouldWorkDays() {
+        return workDays < 0;
+    }
 }

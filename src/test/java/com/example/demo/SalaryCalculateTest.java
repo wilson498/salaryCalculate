@@ -2,11 +2,7 @@ package com.example.demo;
 
 import com.example.demo.repo.LeaveRepo;
 import com.example.demo.repo.SalaryRepo;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -240,6 +236,90 @@ class SalaryCalculateTest {
         @Tag("basic")
         public void when_salary_type_is_hours_and_one_month_leave_day_then_salary_is_same() {
             givenEmployeeSalary(125, SalaryType.HOURLY);
+            givenEmployeeLeave(List.of(
+                    createLeaveDto(
+                            LocalDate.of(2025, 12, 1),
+                            LocalDate.of(2025, 12, 1)
+                    )
+            ));
+            int salary = salaryCalculate.calculate(1, 2025, 12);
+            Assertions.assertEquals(30_000, salary);
+        }
+    }
+
+    @Nested
+    @Tag("weekly-salary")
+    class WeeklySalaryTests {
+
+        @Test
+        @Tag("basic")
+        public void when_salary_type_is_hourly_and_no_leave_day_then_salary_is_same() {
+            givenEmployeeSalary(1000 * 7, SalaryType.WEEKLY);
+            givenEmployeeLeave(List.of());
+            int salary = salaryCalculate.calculate(1, 2025, 12);
+            Assertions.assertEquals(31_000, salary);
+        }
+
+        @Test
+        @Tag("basic")
+        public void when_salary_type_is_hourly_and_all_month_leave_day_then_salary_is_same() {
+            givenEmployeeSalary(1000 * 7, SalaryType.WEEKLY);
+            givenEmployeeLeave(List.of(
+                    createLeaveDto(
+                            LocalDate.of(2025, 12, 1),
+                            LocalDate.of(2025, 12, 31)
+                    )
+            ));
+            int salary = salaryCalculate.calculate(1, 2025, 12);
+            Assertions.assertEquals(0, salary);
+        }
+
+        @Test
+        @Tag("basic")
+        public void when_salary_type_is_hours_and_one_month_leave_day_then_salary_is_same() {
+            givenEmployeeSalary(1000 * 7, SalaryType.WEEKLY);
+            givenEmployeeLeave(List.of(
+                    createLeaveDto(
+                            LocalDate.of(2025, 12, 1),
+                            LocalDate.of(2025, 12, 1)
+                    )
+            ));
+            int salary = salaryCalculate.calculate(1, 2025, 12);
+            Assertions.assertEquals(30_000, salary);
+        }
+    }
+
+    @Nested
+    @Tag("fortnightly-salary")
+    class FortnightlySalaryTests {
+
+        @Test
+        @Tag("basic")
+        public void when_salary_type_is_hourly_and_no_leave_day_then_salary_is_same() {
+            givenEmployeeSalary(1000 * 14, SalaryType.FORTNIGHTLY);
+            givenEmployeeLeave(List.of());
+            int salary = salaryCalculate.calculate(1, 2025, 12);
+            Assertions.assertEquals(31_000, salary);
+        }
+
+        @Test
+        @Tag("basic")
+        public void when_salary_type_is_hourly_and_all_month_leave_day_then_salary_is_same() {
+            givenEmployeeSalary(1000 * 14, SalaryType.FORTNIGHTLY);
+            givenEmployeeLeave(List.of(
+                    createLeaveDto(
+                            LocalDate.of(2025, 12, 1),
+                            LocalDate.of(2025, 12, 31)
+                    )
+            ));
+            int salary = salaryCalculate.calculate(1, 2025, 12);
+            Assertions.assertEquals(0, salary);
+        }
+
+        @Test
+        @Tag("basic")
+        public void when_salary_type_is_hours_and_one_month_leave_day_then_salary_is_same() {
+            givenEmployeeSalary(1000 * 14, SalaryType.FORTNIGHTLY);
             givenEmployeeLeave(List.of(
                     createLeaveDto(
                             LocalDate.of(2025, 12, 1),
