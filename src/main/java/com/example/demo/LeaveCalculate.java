@@ -23,7 +23,7 @@ public record LeaveCalculate(LeaveRepo leaveRepo) {
         int leaveDaysInMonth = date.lengthOfMonth();
         int leaveDays = 0;
         for (int day = 0; day < leaveDaysInMonth; day++) {
-            String daysKey = LeaveDate.getDaysKey(date.plusDays(day));
+            String daysKey = LeaveDate.getDateKey(date.plusDays(day));
             if (leaveDaySet.contains(daysKey)) {
                 leaveDays++;
             }
