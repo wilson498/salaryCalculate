@@ -7,11 +7,12 @@ import java.util.Set;
 public record LeaveDate(LocalDate from, LocalDate to) {
 
     public static String getDateKey(LocalDate currentProcessDate) {
-        return currentProcessDate.getYear() + "-" + currentProcessDate.getMonthValue() + "-" + currentProcessDate.getDayOfMonth();
+        return currentProcessDate.toString();
     }
 
     public Set<String> getLeaveDaySet() {
         Set<String> leaveDaySet = new HashSet<>();
+        if (!isInRange(from)) return leaveDaySet;
         int day = 0;
         LocalDate currentProcessDate = from.plusDays(day);
         do {
