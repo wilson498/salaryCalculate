@@ -13,15 +13,22 @@ public enum SalaryType {
 
     MONTHLY(-1.0);
 
-    @Getter
     private final double workDays;
 
     SalaryType(double workDays) {
         this.workDays = workDays;
     }
 
-
     public boolean shouldCalculateWorkDays() {
         return workDays < 0;
+    }
+
+    public double getDailySalary(int value, double shouldWorkDays) {
+        return value / getWorkDays(shouldWorkDays);
+    }
+
+    private double getWorkDays(double shouldWorkDays) {
+        if(shouldCalculateWorkDays()) return shouldWorkDays;
+        return workDays;
     }
 }

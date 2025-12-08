@@ -12,12 +12,11 @@ public class SalaryCalculateService {
     private final LeaveCalculate leaveCalculate;
 
 
-
     public int calculate(int employeeId, int year, int month) {
         Salary salary = salaryRepo.findByEmployeeId(employeeId);
         double leaveDays = leaveCalculate.getEmployeeLeaveDays(employeeId, year, month);
         double shouldWorkDays = monthlyWorkDays(year, month);
-        double dailySalary = getDailySalary(salary, shouldWorkDays);
+        double dailySalary = salary.getDailySalary(shouldWorkDays);
         double actualWorkDays = shouldWorkDays - leaveDays;
 
         return getSalaryActual(dailySalary, actualWorkDays);
@@ -34,9 +33,4 @@ public class SalaryCalculateService {
     }
 
 
-    public double getDailySalary(Salary salary, double shouldWorkDays) {
-        if(shouldWorkDays == 0) return 0;
-        return salary.salaryType().shouldCalculateWorkDays() ?
-                salary.value() / shouldWorkDays : (double) salary.value() / salary.salaryType().getWorkDays();
-    }
 }
