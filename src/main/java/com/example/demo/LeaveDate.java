@@ -22,5 +22,4 @@ public record LeaveDate(LocalDate from, LocalDate to, LeaveType leaveType) {
         return !dateToCheck.isAfter(to);
     }
 
-
 }

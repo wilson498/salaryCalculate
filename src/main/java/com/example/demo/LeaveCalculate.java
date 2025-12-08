@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.repo.LeaveRepo;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -9,10 +10,12 @@ import java.util.stream.Collectors;
 
 
 @Slf4j
-public record LeaveCalculate(LeaveRepo leaveRepo) {
+@RequiredArgsConstructor
+public class LeaveCalculate {
     private static final double PERSONAL_LEAVE_DAYS = 1.0;
     private static final double SICK_LEAVE_DAYS = 0.5;
     private static final double SPECIAL_LEAVE_DAYS = 0.0;
+    private final LeaveRepo leaveRepo;
 
     public double getEmployeeLeaveDays(int employeeId, int year, int month) {
         Set<LeaveDate> allLeaveDateSet = aggregateLeaveDaysSet(leaveRepo.findAllByEmployeeId(employeeId));

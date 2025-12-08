@@ -8,9 +8,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 
-class SalaryCalculateTest {
+class SalaryCalculateServiceTest {
 
-    private SalaryCalculate salaryCalculate;
+    private SalaryCalculateService salaryCalculateService;
     private SalaryRepo salaryRepo;
     private LeaveRepo leaveRepo;
 
@@ -19,11 +19,12 @@ class SalaryCalculateTest {
     void setUp() {
         salaryRepo = new SalaryRepo();
         leaveRepo = new LeaveRepo();
-        salaryCalculate = new SalaryCalculate(salaryRepo, leaveRepo);
+        LeaveCalculate leaveCalculate = new LeaveCalculate(leaveRepo);
+        salaryCalculateService = new SalaryCalculateService(salaryRepo, leaveCalculate);
     }
 
-    private void givenEmployeeLeave(List<LeaveDate> leaveDtos) {
-        leaveRepo.save(1, leaveDtos);
+    private void givenEmployeeLeave(List<LeaveDate> leaveDates) {
+        leaveRepo.save(1, leaveDates);
     }
 
     private void givenEmployeeSalary(int salary, SalaryType salaryType) {
@@ -44,7 +45,7 @@ class SalaryCalculateTest {
         public void when_all_year_no_leave_then_salary_is_same() {
             givenEmployeeSalary(31_000, SalaryType.MONTHLY);
             givenEmployeeLeave(List.of());
-            int salary = salaryCalculate.calculate(1, 2025, 12);
+            int salary = salaryCalculateService.calculate(1, 2025, 12);
 
             Assertions.assertEquals(31_000, salary);
         }
@@ -59,7 +60,7 @@ class SalaryCalculateTest {
                             LocalDate.of(2025, 12, 31), LeaveType.PERSONAL
                     )
             ));
-            int salary = salaryCalculate.calculate(1, 2025, 12);
+            int salary = salaryCalculateService.calculate(1, 2025, 12);
 
             Assertions.assertEquals(0, salary);
         }
@@ -74,7 +75,7 @@ class SalaryCalculateTest {
                             LocalDate.of(2025, 12, 1), LeaveType.PERSONAL
                     )
             ));
-            int salary = salaryCalculate.calculate(1, 2025, 12);
+            int salary = salaryCalculateService.calculate(1, 2025, 12);
             Assertions.assertEquals(30_000, salary);
         }
 
@@ -92,7 +93,7 @@ class SalaryCalculateTest {
                             LocalDate.of(2025, 12, 7), LeaveType.PERSONAL
                     )
             ));
-            int salary = salaryCalculate.calculate(1, 2025, 12);
+            int salary = salaryCalculateService.calculate(1, 2025, 12);
             Assertions.assertEquals(28_000, salary);
         }
 
@@ -110,7 +111,7 @@ class SalaryCalculateTest {
                         )
                 ));
 
-                int salary = salaryCalculate.calculate(1, 2025, 12);
+                int salary = salaryCalculateService.calculate(1, 2025, 12);
 
                 Assertions.assertEquals(31_000, salary);
             }
@@ -125,7 +126,7 @@ class SalaryCalculateTest {
                         )
                 ));
 
-                int salary = salaryCalculate.calculate(1, 2025, 12);
+                int salary = salaryCalculateService.calculate(1, 2025, 12);
 
                 Assertions.assertEquals(31_000, salary);
             }
@@ -139,7 +140,7 @@ class SalaryCalculateTest {
                                 LocalDate.of(2026, 1, 31), LeaveType.PERSONAL
                         )
                 ));
-                int salary = salaryCalculate.calculate(1, 2025, 12);
+                int salary = salaryCalculateService.calculate(1, 2025, 12);
 
                 Assertions.assertEquals(0, salary);
             }
@@ -155,7 +156,7 @@ class SalaryCalculateTest {
                             LocalDate.of(2025, 11, 1), LeaveType.PERSONAL
                     )
             ));
-            int salary = salaryCalculate.calculate(1, 2025, 11);
+            int salary = salaryCalculateService.calculate(1, 2025, 11);
             // 31000/30 = 1033.33333333~~~~~
             // 31000 -1033.3333333=29966.6667 無條件捨去29966
             Assertions.assertEquals(29_966, salary);
@@ -171,7 +172,7 @@ class SalaryCalculateTest {
         public void when_salary_type_is_daily_and_no_leave_day_then_salary_is_same() {
             givenEmployeeSalary(1000, SalaryType.DAILY);
             givenEmployeeLeave(List.of());
-            int salary = salaryCalculate.calculate(1, 2025, 12);
+            int salary = salaryCalculateService.calculate(1, 2025, 12);
             Assertions.assertEquals(31_000, salary);
         }
 
@@ -185,7 +186,7 @@ class SalaryCalculateTest {
                             LocalDate.of(2025, 12, 31), LeaveType.PERSONAL
                     )
             ));
-            int salary = salaryCalculate.calculate(1, 2025, 12);
+            int salary = salaryCalculateService.calculate(1, 2025, 12);
             Assertions.assertEquals(0, salary);
         }
 
@@ -199,7 +200,7 @@ class SalaryCalculateTest {
                             LocalDate.of(2025, 12, 1), LeaveType.PERSONAL
                     )
             ));
-            int salary = salaryCalculate.calculate(1, 2025, 12);
+            int salary = salaryCalculateService.calculate(1, 2025, 12);
             Assertions.assertEquals(30_000, salary);
         }
     }
@@ -213,7 +214,7 @@ class SalaryCalculateTest {
         public void when_salary_type_is_hourly_and_no_leave_day_then_salary_is_same() {
             givenEmployeeSalary(125, SalaryType.HOURLY);
             givenEmployeeLeave(List.of());
-            int salary = salaryCalculate.calculate(1, 2025, 12);
+            int salary = salaryCalculateService.calculate(1, 2025, 12);
             Assertions.assertEquals(31_000, salary);
         }
 
@@ -227,7 +228,7 @@ class SalaryCalculateTest {
                             LocalDate.of(2025, 12, 31), LeaveType.PERSONAL
                     )
             ));
-            int salary = salaryCalculate.calculate(1, 2025, 12);
+            int salary = salaryCalculateService.calculate(1, 2025, 12);
             Assertions.assertEquals(0, salary);
         }
 
@@ -241,7 +242,7 @@ class SalaryCalculateTest {
                             LocalDate.of(2025, 12, 1), LeaveType.PERSONAL
                     )
             ));
-            int salary = salaryCalculate.calculate(1, 2025, 12);
+            int salary = salaryCalculateService.calculate(1, 2025, 12);
             Assertions.assertEquals(30_000, salary);
         }
     }
@@ -255,7 +256,7 @@ class SalaryCalculateTest {
         public void when_salary_type_is_hourly_and_no_leave_day_then_salary_is_same() {
             givenEmployeeSalary(1000 * 7, SalaryType.WEEKLY);
             givenEmployeeLeave(List.of());
-            int salary = salaryCalculate.calculate(1, 2025, 12);
+            int salary = salaryCalculateService.calculate(1, 2025, 12);
             Assertions.assertEquals(31_000, salary);
         }
 
@@ -269,7 +270,7 @@ class SalaryCalculateTest {
                             LocalDate.of(2025, 12, 31), LeaveType.PERSONAL
                     )
             ));
-            int salary = salaryCalculate.calculate(1, 2025, 12);
+            int salary = salaryCalculateService.calculate(1, 2025, 12);
             Assertions.assertEquals(0, salary);
         }
 
@@ -283,7 +284,7 @@ class SalaryCalculateTest {
                             LocalDate.of(2025, 12, 1), LeaveType.PERSONAL
                     )
             ));
-            int salary = salaryCalculate.calculate(1, 2025, 12);
+            int salary = salaryCalculateService.calculate(1, 2025, 12);
             Assertions.assertEquals(30_000, salary);
         }
     }
@@ -297,7 +298,7 @@ class SalaryCalculateTest {
         public void when_salary_type_is_hourly_and_no_leave_day_then_salary_is_same() {
             givenEmployeeSalary(1000 * 14, SalaryType.FORTNIGHTLY);
             givenEmployeeLeave(List.of());
-            int salary = salaryCalculate.calculate(1, 2025, 12);
+            int salary = salaryCalculateService.calculate(1, 2025, 12);
             Assertions.assertEquals(31_000, salary);
         }
 
@@ -311,7 +312,7 @@ class SalaryCalculateTest {
                             LocalDate.of(2025, 12, 31), LeaveType.PERSONAL
                     )
             ));
-            int salary = salaryCalculate.calculate(1, 2025, 12);
+            int salary = salaryCalculateService.calculate(1, 2025, 12);
             Assertions.assertEquals(0, salary);
         }
 
@@ -325,7 +326,7 @@ class SalaryCalculateTest {
                             LocalDate.of(2025, 12, 1), LeaveType.PERSONAL
                     )
             ));
-            int salary = salaryCalculate.calculate(1, 2025, 12);
+            int salary = salaryCalculateService.calculate(1, 2025, 12);
             Assertions.assertEquals(30_000, salary);
         }
     }
@@ -338,7 +339,7 @@ class SalaryCalculateTest {
         public void when_all_year_no_leave_then_salary_is_same() {
             givenEmployeeSalary(31_000, SalaryType.MONTHLY);
             givenEmployeeLeave(List.of());
-            int salary = salaryCalculate.calculate(1, 2025, 12);
+            int salary = salaryCalculateService.calculate(1, 2025, 12);
 
             Assertions.assertEquals(31_000, salary);
         }
@@ -353,7 +354,7 @@ class SalaryCalculateTest {
                             LocalDate.of(2025, 12, 31), LeaveType.SICK
                     )
             ));
-            int salary = salaryCalculate.calculate(1, 2025, 12);
+            int salary = salaryCalculateService.calculate(1, 2025, 12);
 
             Assertions.assertEquals(15_500, salary);
         }
@@ -368,7 +369,7 @@ class SalaryCalculateTest {
                             LocalDate.of(2025, 12, 1), LeaveType.SICK
                     )
             ));
-            int salary = salaryCalculate.calculate(1, 2025, 12);
+            int salary = salaryCalculateService.calculate(1, 2025, 12);
             Assertions.assertEquals(30_500, salary);
         }
 
@@ -386,7 +387,7 @@ class SalaryCalculateTest {
                             LocalDate.of(2025, 12, 7), LeaveType.SPECIAL
                     )
             ));
-            int salary = salaryCalculate.calculate(1, 2025, 12);
+            int salary = salaryCalculateService.calculate(1, 2025, 12);
             Assertions.assertEquals(30_500, salary);
         }
 
@@ -404,7 +405,7 @@ class SalaryCalculateTest {
                         )
                 ));
 
-                int salary = salaryCalculate.calculate(1, 2025, 12);
+                int salary = salaryCalculateService.calculate(1, 2025, 12);
 
                 Assertions.assertEquals(31_000, salary);
             }
@@ -419,7 +420,7 @@ class SalaryCalculateTest {
                         )
                 ));
 
-                int salary = salaryCalculate.calculate(1, 2025, 12);
+                int salary = salaryCalculateService.calculate(1, 2025, 12);
 
                 Assertions.assertEquals(31_000, salary);
             }
@@ -433,7 +434,7 @@ class SalaryCalculateTest {
                                 LocalDate.of(2026, 1, 31), LeaveType.SICK
                         )
                 ));
-                int salary = salaryCalculate.calculate(1, 2025, 12);
+                int salary = salaryCalculateService.calculate(1, 2025, 12);
 
                 Assertions.assertEquals(15_500, salary);
             }
@@ -449,7 +450,7 @@ class SalaryCalculateTest {
                             LocalDate.of(2025, 11, 1), LeaveType.SICK
                     )
             ));
-            int salary = salaryCalculate.calculate(1, 2025, 11);
+            int salary = salaryCalculateService.calculate(1, 2025, 11);
             // 31000/30 = 1033.33333333~~~~~
             // 31000 - (1033.3333333)/2 = 30483.3333335 無條件捨去30483
 
