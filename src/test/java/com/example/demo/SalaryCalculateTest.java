@@ -19,8 +19,7 @@ class SalaryCalculateTest {
     void setUp() {
         salaryRepo = new SalaryRepo();
         leaveRepo = new LeaveRepo();
-        LeaveCalculate leaveCalculate = new LeaveCalculate(leaveRepo);
-        salaryCalculate = new SalaryCalculate(salaryRepo, leaveCalculate);
+        salaryCalculate = new SalaryCalculate(salaryRepo, leaveRepo);
     }
 
     private void givenEmployeeLeave(List<LeaveDate> leaveDtos) {

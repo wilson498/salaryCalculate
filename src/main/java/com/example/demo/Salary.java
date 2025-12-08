@@ -1,21 +1,20 @@
 package com.example.demo;
 
+import static com.example.demo.SalaryCalculate.getShouldWorkDays;
+
 public record Salary(int value, SalaryType salaryType) {
 
-    public int getSalaryActual(long shouldWorkDays, double leaveDays) {
-        if (shouldWorkDays == 0) {
-            return 0;
-        }
 
-        double dailySalary = getDailySalary(shouldWorkDays);
-        double actualWorkDays = shouldWorkDays - leaveDays;
-
-        return (int) (dailySalary * actualWorkDays);
+    private double getDailySalary(double shouldWorkDays) {
+        return (double) value / shouldWorkDays;
     }
 
-    private double getDailySalary(long shouldWorkDays) {
-        return salaryType.shouldCalculateWorkDays() ?
-                (double) value / shouldWorkDays :
-                value / salaryType.getWorkDays();
+    public double getDailySalary(int year, int month) {
+        double shouldWorkDays = getShouldWorkDays(year, month);
+
+        if (!salaryType.shouldCalculateWorkDays()) {
+            shouldWorkDays = salaryType.getWorkDays();
+        }
+        return getDailySalary(shouldWorkDays);
     }
 }
